@@ -1,11 +1,18 @@
 class PostsController < ApplicationController
+	
+	http_basic_authenticate_with name: "Chris", password: "secret", except: [:index, :show]
+
+	def index
+		@posts = Post.all
+	end
+
 	def new
 		@post = Post.new
 	end
+
 	#submits and confirms user post
 	def create
-		@post = Post.new(params[:post].permit(:title, :text))
-
+			@post = Post.new(params[:post].permit(:title, :text))
 		if @post.save
 			redirect_to @post
 		else
@@ -15,10 +22,6 @@ class PostsController < ApplicationController
 
 	def show
 		@post = Post.find(params[:id])
-	end
-
-	def index
-		@posts = Post.all
 	end
 
 	def edit
